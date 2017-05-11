@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="553.0" prefWidth="933.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <children>
+      <TabPane prefHeight="553.0" prefWidth="933.0">
+        <tabs>
+          <Tab closable="false" text="Работники">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="179.0" prefWidth="1003.0">
+                     <children>
+                        <TableView fx:id="tableView" layoutX="20.0" layoutY="20.0" prefHeight="306.0" prefWidth="600.0">
+                          <columns>
+                              <TableColumn fx:id="id" prefWidth="40.0" text="ID" />
+                              <TableColumn fx:id="first_name" prefWidth="110.0" text="FIRST_NAME" />
+                              <TableColumn fx:id="pather_name" prefWidth="112.0" text="PATHER_NAME" />
+                              <TableColumn fx:id="last_name" prefWidth="74.0" text="LAST_NAME" />
+                              <TableColumn fx:id="position" prefWidth="62.0" text="POSITION" />
+                              <TableColumn fx:id="salary" prefWidth="52.0" text="SALARY" />
+                          </columns>
+                        </TableView>
+                        <Button fx:id="button" layoutX="481.0" layoutY="338.0" mnemonicParsing="false" text="Показать" />
+                        <Label layoutX="632.0" layoutY="16" text="Имя" />
+                        <Label layoutX="632.0" layoutY="50" text="Фамилия" />
+                        <Label layoutX="632.0" layoutY="84" text="Отчество" />
+                        <Label layoutX="632.0" layoutY="119" text="Должность" />
+                        <Label layoutX="632.0" layoutY="155" text="Зарплата" />
+                        <TextField fx:id="empNameIn" layoutX="712.0" layoutY="16.0" />
+                        <TextField fx:id="empLastIn" layoutX="712.0" layoutY="50.0" />
+                        <TextField fx:id="empPatherIn" layoutX="712.0" layoutY="84.0" />
+                        <TextField fx:id="empPositionIn" layoutX="712.0" layoutY="119.0" />
+                        <TextField fx:id="empSalaryIn" layoutX="712.0" layoutY="155.0" />
+                        <Button fx:id="employInButton" layoutX="792" mnemonicParsing="false" text="Добавить" translateY="225" />
+                        <Button fx:id="empDeleteButton" layoutX="560.0" layoutY="338.0" mnemonicParsing="false" text="Удалить" />
+                        <ChoiceBox fx:id="empCoiceBox" layoutX="712" layoutY="190" prefWidth="150.0" />
+                        <Label layoutX="639.0" layoutY="194.0" text="Отдел" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab closable="false" text="Проекты">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="projTableView" layoutX="20.0" layoutY="20.0" prefHeight="306.0" prefWidth="600.0">
+                          <columns>
+                            <TableColumn fx:id="projID" prefWidth="25.0" text="ID" />
+                            <TableColumn fx:id="projNAME" prefWidth="53.0" text="NAME" />
+                              <TableColumn fx:id="projCOST" prefWidth="44.0" text="COST" />
+                              <TableColumn fx:id="projDEP" prefWidth="109.0" text="DEPARTMENT_ID" />
+                              <TableColumn fx:id="projDATEBEG" prefWidth="66.0" text="DATE_BEG" />
+                              <TableColumn fx:id="projDATEEND" prefWidth="68.0" text="DATE_END" />
+                              <TableColumn fx:id="projDATEREAL" prefWidth="124.0" text="DATE_END_REAL" />
+                          </columns>
+                        </TableView>
+                        <Button fx:id="projShowBut" layoutX="484.0" layoutY="336.0" mnemonicParsing="false" text="Показать" />
+                        <Label layoutX="636.0" layoutY="20.0" text="Название" />
+                        <Label layoutX="634.0" layoutY="49.0" text="Цена" />
+                        <Label layoutX="634.0" layoutY="81.0" text="Департамент" />
+                        <Label layoutX="634.0" layoutY="110.0" text="Дата начала" />
+                        <Label layoutX="634.0" layoutY="140.0" text="Дата окончания" />
+                        <TextField fx:id="projNameInc" layoutX="735.0" layoutY="16.0" />
+                        <TextField fx:id="projCostInc" layoutX="735.0" layoutY="45.0" />
+                        <TextField fx:id="projBegInc" layoutX="735.0" layoutY="106.0" promptText="yyyy-mm-dd" />
+                        <TextField fx:id="projEndInc" layoutX="735.0" layoutY="136.0" promptText="yyyy-mm-dd" />
+                        <ChoiceBox fx:id="projDepCB" layoutX="735.0" layoutY="77.0" prefWidth="150.0" />
+                        <Button fx:id="projIncButton" layoutX="816.0" layoutY="173.0" mnemonicParsing="false" text="Добавить" />
+                        <Button fx:id="projDelButton" layoutX="560.0" layoutY="336.0" mnemonicParsing="false" text="Удалить" />
+                     </children></AnchorPane>
+            </content>
+          </Tab>
+            <Tab  closable="false" text="Отделы">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <children>
+                     <TableView fx:id="depTableView" layoutX="20.0" layoutY="20.0" prefHeight="306.0" prefWidth="600.0">
+                       <columns>
+                         <TableColumn fx:id="depIdCol" prefWidth="75.0" text="ID" />
+                         <TableColumn fx:id="depNameCol" prefWidth="75.0" text="NAME" />
+                       </columns>
+                     </TableView>
+                     <Button fx:id="depShowBut" layoutX="484.0" layoutY="336.0" mnemonicParsing="false" text="Показать" />
+                     <Button fx:id="depDelButton" layoutX="560.0" layoutY="336.0" mnemonicParsing="false" text="Удалить" />
+                  </children></AnchorPane>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>
