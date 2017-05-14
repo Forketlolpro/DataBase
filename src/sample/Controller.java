@@ -8,17 +8,16 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.util.converter.IntegerStringConverter;
-
 import java.sql.*;
-import java.text.SimpleDateFormat;
+
 
 public class Controller {
     @FXML
-    Button button,employInButton, empDeleteButton, projShowBut, projIncButton,projDelButton, depShowBut,depDelButton;
+    Button button,employInButton, empDeleteButton, projShowBut, projIncButton,projDelButton, depShowBut,depDelButton,depInsertButton,showProfitButton;
     @FXML
     ChoiceBox empCoiceBox, projDepCB;
     @FXML
-    TextField empNameIn,empLastIn,empPatherIn,empSalaryIn,empPositionIn, projNameInc,projCostInc,projBegInc,projEndInc;
+    TextField empNameIn,empLastIn,empPatherIn,empSalaryIn,empPositionIn, projNameInc,projCostInc,projBegInc,projEndInc, depNameIns;
     //для сотрудников
     ObservableList<Employ> employesUsersData = FXCollections.observableArrayList();
     ObservableList<String> depEmployChoiceBox = FXCollections.observableArrayList();
@@ -28,7 +27,7 @@ public class Controller {
     TableColumn<Employ,Integer> id, salary;
     @FXML
     TableColumn<Employ,String> first_name,pather_name,last_name,position;
-//Для проектов
+    //Для проектов
     ObservableList<String> depChoiceBox = FXCollections.observableArrayList();
     ObservableList<Project> projectsUsersData = FXCollections.observableArrayList();
     @FXML
@@ -38,12 +37,21 @@ public class Controller {
     @FXML
     TableColumn<Project, String> projNAME, projDATEBEG, projDATEEND, projDATEREAL;
     //ДЛЯ ОТДЕЛОВ
+    ObservableList<Department> departmentsUserData = FXCollections.observableArrayList();
     @FXML
     TableView<Department> depTableView;
     @FXML
     TableColumn<Department,Integer> depIdCol;
     @FXML
-    TableColumn<Department,Integer> depNameCol;
+    TableColumn<Department,String> depNameCol;
+    //для статистики
+    ObservableList<Profit> statisticUserData = FXCollections.observableArrayList();
+    @FXML
+    TableView<Profit> statTableViev;
+    @FXML
+    TableColumn<Profit,String> statNameCol;
+    @FXML
+    TableColumn<Profit,Integer> statProfitCol;
 
     @FXML
     public void initialize() {
@@ -151,6 +159,62 @@ public class Controller {
         });
 
         //ДЛЯ ОТДЕЛОВ
+        depTableView.setEditable(true);
+        depIdCol.setCellValueFactory(new PropertyValueFactory<>("departmentID"));
+        depNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+
+        depShowBut.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent ->{
+            departmentsUserData.removeAll();
+            for ( int i = 0; i<depTableView.getItems().size(); i++) {
+                depTableView.getItems().clear();
+            }
+            selectDepartmentFromDB();
+            depTableView.setItems(departmentsUserData);
+        });
+        depDelButton.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent ->{
+            int id = depTableView.getSelectionModel().getSelectedItem().getDepartmentID();
+            StringBuilder sb = new StringBuilder("DELETE FROM DEPARTMENTS WHERE ID ="+id);
+            DBConnector.updateInsertCommand(sb.toString());
+        });
+        depInsertButton.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent ->{
+            StringBuilder command =  new StringBuilder("INSERT INTO departments (departments.NAME) VALUES ('"+depNameIns.getText()+"')");
+            Statement cstmt=null;
+            try {
+                DBConnector.dbConnect();
+                cstmt=DBConnector.conn.createStatement();
+                cstmt.executeQuery(command.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            projNameInc.clear();
+            projBegInc.clear();
+            projEndInc.clear();
+            projCostInc.clear();
+        });
+        //ДЛЯ СТАТИСТИКИ
+        statTableViev.setEditable(true);
+        statNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        statProfitCol.setCellValueFactory(new PropertyValueFactory<>("profit"));
+
+        showProfitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent ->{
+            statisticUserData.removeAll();
+            for ( int i = 0; i<statTableViev.getItems().size(); i++) {
+                statTableViev.getItems().clear();
+            }
+            selectStatisticFromDB();
+            statTableViev.setItems(statisticUserData);
+        });
+    }
+
+    void selectDepartmentFromDB() {
+        try {
+            ResultSet resultSet = DBConnector.dbExecuteQuery("SELECT * FROM DEPARTMENTS");
+            while (resultSet.next()){
+                departmentsUserData.add(new Department(resultSet.getInt("ID"),resultSet.getString("NAME")));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
     void updateEmployees(String collum,String newValue ,int id){
         System.out.printf("UPDATE EMPLOYEES SET "+collum+" = "+newValue+" WHERE id="+id);
@@ -204,6 +268,21 @@ public class Controller {
                 depEmployChoiceBox.add(resultSet1.getString("NAME"));
             }
         }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    void selectStatisticFromDB(){
+        try{
+            ResultSet resultSet = DBConnector.dbExecuteQuery("SELECT NAME, COST-EXPENSES profit " +
+                    "FROM(SELECT  PROJECTS.NAME,PROJECTS.COST,sum((EMPLOYEES.SALARY)*MONTHS_BETWEEN(PROJECTS.DATE_END,PROJECTS.DATE_BEG)) expenses from PROJECTS, DEPARTMENTS,DEPARTMENTS_EMPLOYEES,EMPLOYEES " +
+                    "WHERE PROJECTS.DEPARTMENT_ID=DEPARTMENTS.ID AND DEPARTMENTS_EMPLOYEES.DEPARTMENT_ID=DEPARTMENTS.ID AND DEPARTMENTS_EMPLOYEES.EMPLOYEE_ID = EMPLOYEES.ID " +
+                    "AND PROJECTS.ID IN (SELECT PROJECTS.ID FROM PROJECTS WHERE DATE_END_REAL is not null AND DATE_BEG<SYSDATE) group by PROJECTS.NAME, PROJECTS.COST)");
+
+            while (resultSet.next()){
+                statisticUserData.add(new Profit(resultSet.getString("NAME"),resultSet.getInt("profit")));
+            }
+        }
+        catch (Exception e){
             e.printStackTrace();
         }
     }

@@ -19,4 +19,13 @@ public class Department {
         this.departmentID.set(departmentID);
         this.name.set(name);
     }
+    public IntegerProperty departmentIDProperty(){
+        return departmentID;
+    }
+    public StringProperty nameProperty(){
+        return name;
+    }
+    int getDepartmentID(){
+        return departmentID.get();
+    }
 }

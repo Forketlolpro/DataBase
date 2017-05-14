@@ -51,6 +51,7 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
+                        <Button fx:id="showProfitButton" mnemonicParsing="false" text="Прибыль"  layoutX="816.0" layoutY="210.0" />
                         <TableView fx:id="projTableView" layoutX="20.0" layoutY="20.0" prefHeight="306.0" prefWidth="600.0">
                           <columns>
                             <TableColumn fx:id="projID" prefWidth="25.0" text="ID" />
@@ -75,10 +76,16 @@
                         <ChoiceBox fx:id="projDepCB" layoutX="735.0" layoutY="77.0" prefWidth="150.0" />
                         <Button fx:id="projIncButton" layoutX="816.0" layoutY="173.0" mnemonicParsing="false" text="Добавить" />
                         <Button fx:id="projDelButton" layoutX="560.0" layoutY="336.0" mnemonicParsing="false" text="Удалить" />
+                        <TableView fx:id="statTableViev" layoutX="634.0" layoutY="210.0" prefHeight="116.0" prefWidth="170.0">
+                          <columns>
+                            <TableColumn fx:id="statNameCol" prefWidth="77.0" text="C1" />
+                            <TableColumn fx:id="statProfitCol" prefWidth="73.0" text="C2" />
+                          </columns>
+                        </TableView>
                      </children></AnchorPane>
             </content>
           </Tab>
-            <Tab  closable="false" text="Отделы">
+            <Tab closable="false" text="Отделы">
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                   <children>
                      <TableView fx:id="depTableView" layoutX="20.0" layoutY="20.0" prefHeight="306.0" prefWidth="600.0">
@@ -89,6 +96,9 @@
                      </TableView>
                      <Button fx:id="depShowBut" layoutX="484.0" layoutY="336.0" mnemonicParsing="false" text="Показать" />
                      <Button fx:id="depDelButton" layoutX="560.0" layoutY="336.0" mnemonicParsing="false" text="Удалить" />
+                     <Label layoutX="635.0" layoutY="20.0" text="Имя" />
+                     <TextField fx:id="depNameIns" layoutX="680.0" layoutY="16.0" />
+                     <Button fx:id="depInsertButton" layoutX="760.0" layoutY="58.0" mnemonicParsing="false" text="Добавить" />
                   </children></AnchorPane>
             </Tab>
         </tabs>
